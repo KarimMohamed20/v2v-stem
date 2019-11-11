@@ -62,7 +62,7 @@ class HomeState extends State<Home> {
             CameraPosition(
                 target: LatLng(
                     currentLocation['latitude'], currentLocation['longitude']),
-                zoom: 17),
+                zoom: 20),
           ),
         );
         updateDatabase();
@@ -142,14 +142,20 @@ class HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text('V2V STEM')),
+        appBar: AppBar(
+          title: const Text(
+            'Cars in street',
+          ),
+          centerTitle: true,
+          backgroundColor: Colors.red,
+        ),
         body: Container(
           child: SizedBox(
             width: double.infinity,
             height: double.infinity,
             child: GoogleMap(
               initialCameraPosition: CameraPosition(
-                  target: LatLng(currentLatitude, currentLongitude), zoom: 17),
+                  target: LatLng(currentLatitude, currentLongitude), zoom: 20), compassEnabled: true,mapType: MapType.satellite,
               onMapCreated: _onMapCreated,
             ),
           ),
