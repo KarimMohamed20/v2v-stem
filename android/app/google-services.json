@@ -1,0 +1,48 @@
+{
+    "project_info": {
+      "project_number": "927582592329",
+      "firebase_url": "https://v2v-stem.firebaseio.com",
+      "project_id": "v2v-stem",
+      "storage_bucket": "v2v-stem.appspot.com"
+    },
+    "client": [
+      {
+        "client_info": {
+          "mobilesdk_app_id": "1:927582592329:android:a1f9305aeae65bbc360e98",
+          "android_client_info": {
+            "package_name": "com.plebits.v2v_stem"
+          }
+        },
+        "oauth_client": [
+          {
+            "client_id": "927582592329-ha8llfv159e7r9negto9ds3sdaqfhecg.apps.googleusercontent.com",
+            "client_type": 1,
+            "android_info": {
+              "package_name": "com.plebits.v2v_stem",
+              "certificate_hash": "49b812b17af3c3b25021f13fb605e0c5c93a6f35"
+            }
+          },
+          {
+            "client_id": "927582592329-sdg5ih3r5iqge2dl1up4uri5ld84d5ef.apps.googleusercontent.com",
+            "client_type": 3
+          }
+        ],
+        "api_key": [
+          {
+            "current_key": "AIzaSyDrdRfn4LF2bQRWaYFN1VvSSZwhqibSRPo"
+          }
+        ],
+        "services": {
+          "appinvite_service": {
+            "other_platform_oauth_client": [
+              {
+                "client_id": "927582592329-sdg5ih3r5iqge2dl1up4uri5ld84d5ef.apps.googleusercontent.com",
+                "client_type": 3
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "configuration_version": "1"
+  }
