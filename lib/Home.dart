@@ -65,17 +65,8 @@ class HomeState extends State<Home> {
                 zoom: 17),
           ),
         );
-      
-        await mapController.clearMarkers();
-
-        mapController.addMarker(
-          MarkerOptions(
-            position: LatLng(
-                currentLocation['latitude'], currentLocation['longitude']),
-          ),
-        );
+        updateDatabase();
       });
-      updateDatabase();
     });
     return null;
   }
@@ -94,6 +85,7 @@ class HomeState extends State<Home> {
             currentLatitude = event.snapshot.value['latitude'];
             currentLongitude = event.snapshot.value['longitude'];
           });
+          mapController.clearMarkers();
           mapController.addMarker(
             MarkerOptions(
               position: LatLng(event.snapshot.value['latitude'],
