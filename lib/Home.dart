@@ -13,6 +13,7 @@ class Home extends StatefulWidget {
 
 class HomeState extends State<Home> {
   static final databaseReference = FirebaseDatabase.instance.reference();
+  MapType _currentMapType = MapType.normal;
 
   static double currentLatitude = 0.0;
   static double currentLongitude = 0.0;
@@ -149,16 +150,58 @@ class HomeState extends State<Home> {
           centerTitle: true,
           backgroundColor: Colors.red,
         ),
-        body: Container(
-          child: SizedBox(
-            width: double.infinity,
-            height: double.infinity,
-            child: GoogleMap(
-              initialCameraPosition: CameraPosition(
-                  target: LatLng(currentLatitude, currentLongitude), zoom: 20), compassEnabled: true,mapType: MapType.satellite,
-              onMapCreated: _onMapCreated,
+        body: Column(
+          children: <Widget>[
+            SizedBox(
+              width: double.infinity,
+              height: double.infinity,
+              child: GoogleMap(
+                initialCameraPosition: CameraPosition(
+                    target: LatLng(currentLatitude, currentLongitude),
+                    zoom: 20),
+                compassEnabled: true,
+                mapType: _currentMapType,
+                onMapCreated: _onMapCreated,
+              ),
+            ),
+            buttons(),
+          ],
+        ));
+  }
+
+  buttons() {
+    return Padding(
+      padding: EdgeInsets.only(top: 10, right: 10),
+      child: Align(
+        alignment: Alignment.topLeft,
+        child: Container(
+          width: 80,
+          padding: EdgeInsets.symmetric(horizontal: 10),
+          child: FlatButton(
+            color: Colors.white70,
+            onPressed: _onMapTypeButtonPressed,
+            materialTapTargetSize: MaterialTapTargetSize.padded,
+            // backgroundColor: Colors.green,
+            child: const Icon(
+              Icons.satellite,
+              size: 25.0,
+              color: Colors.black45,
             ),
           ),
-        ));
+        ),
+      ),
+    );
+  }
+
+  void _onMapTypeButtonPressed() {
+    setState(() {
+      _currentMapType = _currentMapType == MapType.normal
+          ? MapType.satellite
+          : MapType.normal;
+    });
+  }
+
+  map() {
+    return null;
   }
 }
