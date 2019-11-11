@@ -52,7 +52,7 @@ class HomeState extends State<Home> {
 
     initPlatformState();
     location.onLocationChanged().listen((result) {
-      setState(() {
+      setState(() async {
         currentLocation = {
           "latitude": result.latitude,
           "longitude": result.longitude
@@ -65,6 +65,9 @@ class HomeState extends State<Home> {
                 zoom: 17),
           ),
         );
+      
+        await mapController.clearMarkers();
+
         mapController.addMarker(
           MarkerOptions(
             position: LatLng(
