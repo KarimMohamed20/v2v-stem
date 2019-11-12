@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:flutter/scheduler.dart' show timeDilation;
 import 'package:flutter/material.dart';
 import 'widgets/splash-landing/circles.dart';
 

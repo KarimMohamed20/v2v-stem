@@ -19,9 +19,7 @@ class LandingPageState extends State<LandingPage>
   Animation<AlignmentGeometry> buttonAlignment;
   Animation<double> buttonOpacity;
 
-  @override
-  void initState() {
-    super.initState();
+  void mainAnimationFunc() {
     buttonAnimationController = new AnimationController(
         vsync: this, duration: new Duration(milliseconds: 1000));
 
@@ -37,20 +35,27 @@ class LandingPageState extends State<LandingPage>
     ).animate(new CurvedAnimation(
       parent: buttonAnimationController,
       curve: new Interval(0.3, 1.0, curve: Curves.easeInOut),));
-
-    buttonAlignment.addListener(() {
+buttonAlignment.addListener(() {
       setState(() {});
     });
     buttonOpacity.addListener(() {
       setState(() {});
     });
-
+    
     buttonAnimationController.forward();
   }
-
+  
+  @override
+  void initState() {
+    super.initState();
+    mainAnimationFunc();
+  }
+ 
   @override
   void dispose() {
+
     buttonAnimationController.dispose();
+    super.dispose();
   }
 
   @override
@@ -82,7 +87,8 @@ class LandingPageState extends State<LandingPage>
             children: <Widget>[
               new AnimatedText(
                   "Know Everything \nin your way:", animatedTextDelay,
-                  durationInMilliseconds: 2500),
+                  durationInMilliseconds: 2500,
+                  textStyle: TextStyle(color: Colors.black),),
               new AnimatedServicesText(animatedTextDelay + 2500),
             ],
           ),
