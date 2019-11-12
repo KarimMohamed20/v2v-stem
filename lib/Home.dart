@@ -5,6 +5,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 
 class Home extends StatefulWidget {
   final uid;
@@ -84,7 +85,7 @@ class HomeState extends State<Home> {
                   markerId: MarkerId(
                     event.snapshot.key,
                   ),
-                  
+
                   position: LatLng(
                       double.parse(event.snapshot.value['latitude'].toString()),
                       double.parse(
@@ -201,29 +202,20 @@ class HomeState extends State<Home> {
         elevation: 20,
         isExtended: true,
       ),
-    );
-  }
+      bottomNavigationBar: CurvedNavigationBar(
+        backgroundColor: Colors.blueAccent,
+        initialIndex: 2,
+        animationCurve: Curves.easeOutCubic,
+        color: Colors.grey.shade50,
+        buttonBackgroundColor: Colors.grey.shade100,
+        items: <Widget>[
+          Icon(Icons.compare_arrows, size: 30),
+          Icon(Icons.navigation, size: 30),
+          Icon(Icons.person_pin, size: 30),
+        ],
+        onTap: (index) {
 
-  buttons() {
-    return Padding(
-      padding: EdgeInsets.only(top: 10, right: 10),
-      child: Align(
-        alignment: Alignment.topLeft,
-        child: Container(
-          width: 80,
-          padding: EdgeInsets.symmetric(horizontal: 10),
-          child: FlatButton(
-            color: Colors.white70,
-            onPressed: _onMapTypeButtonPressed,
-            materialTapTargetSize: MaterialTapTargetSize.padded,
-            // backgroundColor: Colors.green,
-            child: const Icon(
-              Icons.satellite,
-              size: 25.0,
-              color: Colors.black45,
-            ),
-          ),
-        ),
+        },
       ),
     );
   }

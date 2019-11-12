@@ -23,6 +23,7 @@ dependencies:
   firebase_core: ^0.4.0
   firebase_auth: ^0.14.0+8
   shared_preferences:
+  curved_navigation_bar: ^0.1.2 #latest version
 
 
 

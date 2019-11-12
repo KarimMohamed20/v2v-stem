@@ -92,7 +92,7 @@ buttonAlignment.addListener(() {
 //              new Text("Know Everything\nin your way:", style: TextStyle(color: Colors.black, fontSize: 28.0,)),
 //              End Preview
 
-            
+
 //            ############أحيانا مش بيظهر الكلام مظبوط بسبب الديباج لكن مع الريليس هيتظبط##########
               new AnimatedText(
                   "Know Everything \nin your way:", animatedTextDelay,
@@ -165,10 +165,7 @@ buttonAlignment.addListener(() {
                 fontWeight: FontWeight.w500),),
         ),
       ),
-      onTap: () {
-        Navigator.push(context, MaterialPageRoute(
-          builder: (context)=>Register()
-        ));
+      onTap: () {Navigator.pushReplacementNamed(context, "login");
       },
     );
   }
