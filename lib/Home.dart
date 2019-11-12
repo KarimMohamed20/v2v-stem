@@ -86,11 +86,12 @@ class HomeState extends State<Home> {
             .child(key)
             .onValue
             .listen((event) async {
+              print(event.snapshot.key);
           if (deviceMarkers.contains(event.snapshot.key) == true) {
             markers.removeWhere(
                 (marker) => marker.markerId.value == event.snapshot.key);
             deviceMarkers.add(event.snapshot.key);
-
+            print("Added: ${event.snapshot.key}");
             markers.add(Marker(
               markerId: MarkerId(
                 event.snapshot.key,
