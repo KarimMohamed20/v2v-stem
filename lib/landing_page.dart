@@ -81,6 +81,7 @@ class LandingPageState extends State<LandingPage>
         child: new Padding(
           padding: const EdgeInsets.only(left: 15.0),
           child: new Column(
+            
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
