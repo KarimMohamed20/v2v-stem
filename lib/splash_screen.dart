@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'Home.dart';
 import 'widgets/splash-landing/circles.dart';
 
 class SplashPage extends StatefulWidget {
@@ -9,7 +11,6 @@ class SplashPage extends StatefulWidget {
 
 class SplashPageState extends State<SplashPage>
     with SingleTickerProviderStateMixin {
-
   final circleDiameter = 50.0;
 
   AnimationController controller1;
@@ -37,52 +38,65 @@ class SplashPageState extends State<SplashPage>
   void initState() {
     super.initState();
 
-    controller1 =
-    new AnimationController(vsync: this, duration: const Duration(seconds: 7));
+    controller1 = new AnimationController(
+        vsync: this, duration: const Duration(seconds: 7));
     translation1 = new Tween<double>(begin: 50.0, end: -20.0).animate(
-        new CurvedAnimation(parent: controller1,
+        new CurvedAnimation(
+            parent: controller1,
             curve: new Interval(0.0, 0.14, curve: Curves.easeInOut)));
     scale1 = new Tween<double>(begin: 0.8, end: 0.4).animate(
-        new CurvedAnimation(parent: controller1,
+        new CurvedAnimation(
+            parent: controller1,
             curve: new Interval(0.0, 0.14, curve: Curves.linear)));
 
     translation1Reverse = new Tween<double>(begin: -20.0, end: 55.0).animate(
-        new CurvedAnimation(parent: controller1,
+        new CurvedAnimation(
+            parent: controller1,
             curve: new Interval(0.14, 0.28, curve: Curves.easeInOut)));
     scale1Reverse = new Tween<double>(begin: 0.4, end: 0.85).animate(
-        new CurvedAnimation(parent: controller1,
+        new CurvedAnimation(
+            parent: controller1,
             curve: new Interval(0.14, 0.28, curve: Curves.linear)));
 
     translation2 = new Tween<double>(begin: 55.0, end: -20.0).animate(
-        new CurvedAnimation(parent: controller1,
+        new CurvedAnimation(
+            parent: controller1,
             curve: new Interval(0.28, 0.42, curve: Curves.easeInOut)));
     scale2 = new Tween<double>(begin: 0.85, end: 0.4).animate(
-        new CurvedAnimation(parent: controller1,
+        new CurvedAnimation(
+            parent: controller1,
             curve: new Interval(0.28, 0.42, curve: Curves.linear)));
 
     translation2Reverse = new Tween<double>(begin: -20.0, end: 60.0).animate(
-        new CurvedAnimation(parent: controller1,
+        new CurvedAnimation(
+            parent: controller1,
             curve: new Interval(0.42, 0.57, curve: Curves.easeInOut)));
     scale2Reverse = new Tween<double>(begin: 0.4, end: 0.9).animate(
-        new CurvedAnimation(parent: controller1,
+        new CurvedAnimation(
+            parent: controller1,
             curve: new Interval(0.42, 0.57, curve: Curves.linear)));
 
     translation3 = new Tween<double>(begin: 60.0, end: -20.0).animate(
-        new CurvedAnimation(parent: controller1,
+        new CurvedAnimation(
+            parent: controller1,
             curve: new Interval(0.57, 0.71, curve: Curves.easeInOut)));
     scale3 = new Tween<double>(begin: 0.9, end: 0.4).animate(
-        new CurvedAnimation(parent: controller1,
+        new CurvedAnimation(
+            parent: controller1,
             curve: new Interval(0.57, 0.71, curve: Curves.linear)));
 
     translation3Reverse = new Tween<double>(begin: -20.0, end: 65.0).animate(
-        new CurvedAnimation(parent: controller1,
+        new CurvedAnimation(
+            parent: controller1,
             curve: new Interval(0.71, 0.85, curve: Curves.easeInOut)));
     scale3Reverse = new Tween<double>(begin: 0.4, end: 1.0).animate(
-        new CurvedAnimation(parent: controller1,
+        new CurvedAnimation(
+            parent: controller1,
             curve: new Interval(0.71, 0.85, curve: Curves.linear)));
 
     translation4 = new Tween<double>(begin: 65.0, end: 15.0).animate(
-        new CurvedAnimation(parent: controller1,
+        new CurvedAnimation(
+            parent: controller1,
             curve: new Interval(0.85, 1.0, curve: Curves.linear)));
 
     translation1.addListener(() {
@@ -185,8 +199,8 @@ class SplashPageState extends State<SplashPage>
 
   @override
   Widget build(BuildContext context) {
-    final matrix1 = new Matrix4.translationValues(
-        -1 * currentTranslation, 0.0, 0.0);
+    final matrix1 =
+        new Matrix4.translationValues(-1 * currentTranslation, 0.0, 0.0);
     matrix1.scale(currentScale, currentScale);
     final matrix2 = new Matrix4.translationValues(currentTranslation, 0.0, 0.0);
     matrix2.scale(currentScale, currentScale);
@@ -217,15 +231,13 @@ class SplashPageState extends State<SplashPage>
                 ],
               ),
             ),
-            Column (
+            Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-
                 Padding(
                   padding: const EdgeInsets.all(30.0),
                   child: Text("Some Text لسه محطيتهوش هههه"),
                 ),
-
               ],
             ),
           ],
@@ -234,9 +246,18 @@ class SplashPageState extends State<SplashPage>
     );
   }
 
-  void showLandingPage() {
-    new Future.delayed(new Duration(milliseconds: 500)).then((_) =>
-        Navigator.of(context).pushNamed("landing"));
+  void showLandingPage() async {
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    var uid = _prefs.getString("uid");
+    if (uid != null) {
+      
+      new Future.delayed(new Duration(milliseconds: 500)).then(
+          (_) => Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (context)=> Home(uid: uid,)
+          )));
+    } else {
+      new Future.delayed(new Duration(milliseconds: 500))
+          .then((_) => Navigator.of(context).pushReplacementNamed("landing"));
+    }
   }
-
 }

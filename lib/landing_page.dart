@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_maps/Login.dart';
+import 'package:flutter_maps/Register.dart';
 import 'package:flutter_maps/widgets/splash-landing/animated_background.dart';
 import 'package:flutter_maps/widgets/splash-landing/animated_text.dart';
 import 'package:flutter_maps/widgets/splash-landing/animated_services.dart';
@@ -156,7 +158,11 @@ buttonAlignment.addListener(() {
                 fontWeight: FontWeight.w500),),
         ),
       ),
-      onTap: () {print("Create Account Clicked");},
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(
+          builder: (context)=>Register()
+        ));
+      },
     );
   }
 
@@ -175,13 +181,15 @@ buttonAlignment.addListener(() {
             ),
           ),
           alignment: Alignment.center,
-          child: new Text("Sign in",
+          child: new Text("Sign In",
             style: new TextStyle(color: Colors.black54,
                 fontSize: 16.0,
                 fontWeight: FontWeight.w500),),
         ),
       ),
-      onTap: () {print("LOGIN CLICKED");},
+      onTap: () {Navigator.push(context, MaterialPageRoute(
+          builder: (context)=>Login()
+        ));},
     );
   }
 

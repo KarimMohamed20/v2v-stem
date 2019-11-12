@@ -1,18 +1,19 @@
 import 'dart:async';
 import 'package:flutter/services.dart';
-import 'package:device_id/device_id.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 class Home extends StatefulWidget {
+  final uid;
+  Home({@required this.uid});
   @override
   State createState() => HomeState();
 }
 
 class HomeState extends State<Home> {
-  static final databaseReference = FirebaseDatabase.instance.reference();
+  var databaseReference = FirebaseDatabase.instance.reference();
   MapType _currentMapType = MapType.satellite;
 
   static double currentLatitude = 0.0;
@@ -27,30 +28,15 @@ class HomeState extends State<Home> {
 
   Map<String, double> currentLocation = new Map();
 
-  String _deviceid = 'Unknown';
 
-  Future<void> initDeviceId() async {
-    String deviceid;
-
-    deviceid = await DeviceId.getID;
-
-    if (!mounted) return;
-
-    setState(() {
-      _deviceid = deviceid;
-    });
-  }
-
-  void updateDatabase() async {
-    databaseReference.child(_deviceid).set({
-      'latitude': currentLocation['latitude'],
-      'longitude': currentLocation['longitude'],
+  void updateDatabase() {
+    databaseReference.child(widget.uid).update({
+      "latitude":currentLocation['latitude'],
+      "longitude": currentLocation['longitude']
     });
   }
 
   Future sendMyLocation() async {
-    initDeviceId();
-
     initPlatformState();
     location.onLocationChanged().listen((result) {
       setState(() {
@@ -72,7 +58,7 @@ class HomeState extends State<Home> {
     return null;
   }
 
-  var deviceMarkers = [];
+  var uidMarkers = [];
   Set<Marker> markers = {};
   void mergePostandGet() async {
     await sendMyLocation();
@@ -86,26 +72,33 @@ class HomeState extends State<Home> {
             .child(key)
             .onValue
             .listen((event) async {
-              print(event.snapshot.key);
-          if (deviceMarkers.contains(event.snapshot.key) == true) {
+          print(event.snapshot.key);
+          if (uidMarkers.contains(event.snapshot.key) == true) {
             markers.removeWhere(
                 (marker) => marker.markerId.value == event.snapshot.key);
-            deviceMarkers.add(event.snapshot.key);
+            uidMarkers.add(event.snapshot.key);
             print("Added: ${event.snapshot.key}");
-            markers.add(Marker(
-              markerId: MarkerId(
-                event.snapshot.key,
-              ),
+            markers.add(
+              Marker(
+                  markerId: MarkerId(
+                    event.snapshot.key,
+                  ),
+                  
+                  position: LatLng(
+                      double.parse(event.snapshot.value['latitude'].toString()),
+                      double.parse(
+                          event.snapshot.value['longitude'].toString())),
+                  infoWindow: InfoWindow(
 
-              position: LatLng(
-                  double.parse(event.snapshot.value['latitude'].toString()),
+                      title: event.snapshot.value['name'] ,
+                      snippet: event.snapshot.value['carModel'] )),
+            );
+            print(
+              LatLng(double.parse(event.snapshot.value['latitude'].toString()),
                   double.parse(event.snapshot.value['longitude'].toString())),
-            ));
-            print(LatLng(
-                  double.parse(event.snapshot.value['latitude'].toString()),
-                  double.parse(event.snapshot.value['longitude'].toString())),);
+            );
           } else {
-            deviceMarkers.add(event.snapshot.key);
+            uidMarkers.add(event.snapshot.key);
 
             markers.add(Marker(
               markerId: MarkerId(
