@@ -96,10 +96,14 @@ class HomeState extends State<Home> {
               markerId: MarkerId(
                 event.snapshot.key,
               ),
+
               position: LatLng(
                   double.parse(event.snapshot.value['latitude'].toString()),
                   double.parse(event.snapshot.value['longitude'].toString())),
             ));
+            print(LatLng(
+                  double.parse(event.snapshot.value['latitude'].toString()),
+                  double.parse(event.snapshot.value['longitude'].toString())),);
           } else {
             deviceMarkers.add(event.snapshot.key);
 
@@ -169,19 +173,15 @@ class HomeState extends State<Home> {
         centerTitle: true,
         backgroundColor: Colors.indigo,
       ),
-      body: Column(
+      body: Stack(
         children: <Widget>[
-          SizedBox(
-            width: 600,
-            height: 600,
-            child: GoogleMap(
-              markers: markers,
-              initialCameraPosition: CameraPosition(
-                  target: LatLng(currentLatitude, currentLongitude), zoom: 20),
-              compassEnabled: true,
-              mapType: _currentMapType,
-              onMapCreated: _onMapCreated,
-            ),
+          GoogleMap(
+            markers: markers,
+            initialCameraPosition: CameraPosition(
+                target: LatLng(currentLatitude, currentLongitude), zoom: 20),
+            compassEnabled: true,
+            mapType: _currentMapType,
+            onMapCreated: _onMapCreated,
           ),
         ],
       ),
