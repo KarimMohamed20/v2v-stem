@@ -13,7 +13,7 @@ class Home extends StatefulWidget {
 
 class HomeState extends State<Home> {
   static final databaseReference = FirebaseDatabase.instance.reference();
-  MapType _currentMapType = MapType.normal;
+  MapType _currentMapType = MapType.satellite;
 
   static double currentLatitude = 0.0;
   static double currentLongitude = 0.0;
@@ -143,30 +143,38 @@ class HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            'Cars in street',
-          ),
-          centerTitle: true,
-          backgroundColor: Colors.red,
+      appBar: AppBar(
+        title: const Text(
+          'Cars in street',
         ),
-        body: Column(
-          children: <Widget>[
-            SizedBox(
-              width: double.infinity,
-              height: double.infinity,
-              child: GoogleMap(
-                initialCameraPosition: CameraPosition(
-                    target: LatLng(currentLatitude, currentLongitude),
-                    zoom: 20),
-                compassEnabled: true,
-                mapType: _currentMapType,
-                onMapCreated: _onMapCreated,
-              ),
+        centerTitle: true,
+        backgroundColor: Colors.indigo,
+      ),
+      body: Column(
+        children: <Widget>[
+          SizedBox(
+            width: 600,
+            height: 600,
+            child: GoogleMap(
+              initialCameraPosition: CameraPosition(
+                  target: LatLng(currentLatitude, currentLongitude), zoom: 20),
+              compassEnabled: true,
+              mapType: _currentMapType,
+              onMapCreated: _onMapCreated,
             ),
-            buttons(),
-          ],
-        ));
+          ),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _onMapTypeButtonPressed,
+        child: Icon(Icons.satellite),
+        backgroundColor: Colors.indigoAccent,
+        hoverColor: Colors.white,
+        elevation: 20,
+        isExtended: true,
+
+      ),
+    );
   }
 
   buttons() {
