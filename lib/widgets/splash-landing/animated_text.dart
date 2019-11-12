@@ -29,9 +29,7 @@ class AnimatedTextState extends State<AnimatedText>
   AnimatedTextState(this.text) {
     textRunes = text.runes.toList();
   }
-
-  @override
-  Future initState() async {
+  void initText() {
     animationController = new AnimationController(
         vsync: this,
         value: 0.0,
@@ -54,9 +52,14 @@ class AnimatedTextState extends State<AnimatedText>
       }
     });
 
-    await
+    
     new Future.delayed(new Duration(milliseconds: widget.delayInMilliseconds));
     animationController.forward();
+  }
+  @override
+   void initState()  {
+    super.initState();
+    initText();
   }
 
   @override

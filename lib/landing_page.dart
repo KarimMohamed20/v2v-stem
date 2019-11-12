@@ -158,7 +158,11 @@ buttonAlignment.addListener(() {
                 fontWeight: FontWeight.w500),),
         ),
       ),
-      onTap: ()=>{Navigator.of(context).pushReplacementNamed("register")},
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(
+          builder: (context)=>Register()
+        ));
+      },
     );
   }
 
@@ -183,7 +187,9 @@ buttonAlignment.addListener(() {
                 fontWeight: FontWeight.w500),),
         ),
       ),
-      onTap: ()=>{Navigator.of(context).pushReplacementNamed("login")},
+      onTap: () {Navigator.push(context, MaterialPageRoute(
+          builder: (context)=>Login()
+        ));},
     );
   }
 
