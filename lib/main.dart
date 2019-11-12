@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_maps/Home.dart';
+import 'landing_page.dart';
 import 'splash_screen.dart';
 import 'landing_page.dart';
 import'package:flutter_maps/Login.dart';

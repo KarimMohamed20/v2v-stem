@@ -129,7 +129,7 @@ class _AnimationState extends State<AnimatedServicesText>
             alignment: locationSlideOut.value,
             child: new Opacity(
               opacity: locationFadeOut.value,
-              child: new AnimatedText("London", widget.delayInMilliseconds,
+              child: new AnimatedText("Location", widget.delayInMilliseconds,
                 durationInMilliseconds: 500,
                 textStyle: new TextStyle(color: Colors.green,
                     fontSize: 24.0,
