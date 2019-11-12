@@ -13,6 +13,7 @@ class Home extends StatefulWidget {
 
 class HomeState extends State<Home> {
   static final databaseReference = FirebaseDatabase.instance.reference();
+  MapType _currentMapType = MapType.satellite;
 
   static double currentLatitude = 0.0;
   static double currentLongitude = 0.0;
@@ -62,7 +63,7 @@ class HomeState extends State<Home> {
             CameraPosition(
                 target: LatLng(
                     currentLocation['latitude'], currentLocation['longitude']),
-                zoom: 17),
+                zoom: 20),
           ),
         );
         updateDatabase();
@@ -156,17 +157,73 @@ class HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text('V2V STEM')),
-        body: Container(
-          child: SizedBox(
-            width: double.infinity,
-            height: double.infinity,
+      appBar: AppBar(
+        title: const Text(
+          'Cars in street',
+        ),
+        centerTitle: true,
+        backgroundColor: Colors.indigo,
+      ),
+      body: Column(
+        children: <Widget>[
+          SizedBox(
+            width: 600,
+            height: 600,
             child: GoogleMap(
               initialCameraPosition: CameraPosition(
-                  target: LatLng(currentLatitude, currentLongitude), zoom: 17),
+                  target: LatLng(currentLatitude, currentLongitude), zoom: 20),
+              compassEnabled: true,
+              mapType: _currentMapType,
               onMapCreated: _onMapCreated,
             ),
           ),
-        ));
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _onMapTypeButtonPressed,
+        child: Icon(Icons.satellite),
+        backgroundColor: Colors.indigoAccent,
+        hoverColor: Colors.white,
+        elevation: 20,
+        isExtended: true,
+
+      ),
+    );
+  }
+
+  buttons() {
+    return Padding(
+      padding: EdgeInsets.only(top: 10, right: 10),
+      child: Align(
+        alignment: Alignment.topLeft,
+        child: Container(
+          width: 80,
+          padding: EdgeInsets.symmetric(horizontal: 10),
+          child: FlatButton(
+            color: Colors.white70,
+            onPressed: _onMapTypeButtonPressed,
+            materialTapTargetSize: MaterialTapTargetSize.padded,
+            // backgroundColor: Colors.green,
+            child: const Icon(
+              Icons.satellite,
+              size: 25.0,
+              color: Colors.black45,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _onMapTypeButtonPressed() {
+    setState(() {
+      _currentMapType = _currentMapType == MapType.normal
+          ? MapType.satellite
+          : MapType.normal;
+    });
+  }
+
+  map() {
+    return null;
   }
 }
