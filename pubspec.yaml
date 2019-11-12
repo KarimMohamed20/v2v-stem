@@ -10,13 +10,13 @@ description: A new Flutter application.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.0.0-dev.68.0 <3.0.0"
+  sdk: ">=2.2.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
   advanced_splashscreen:
-  google_maps_flutter: ^0.2.0+6
+  google_maps_flutter: ^0.5.21+8
   location: ^2.3.5
   firebase_database:
   device_id:

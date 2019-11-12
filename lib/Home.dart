@@ -72,7 +72,8 @@ class HomeState extends State<Home> {
     return null;
   }
 
-  var i = 0;
+  var deviceMarkers = [];
+  Set<Marker> markers = {};
   void mergePostandGet() async {
     await sendMyLocation();
     databaseReference.once().then((DataSnapshot snapshot) {
@@ -85,28 +86,31 @@ class HomeState extends State<Home> {
             .child(key)
             .onValue
             .listen((event) async {
-          setState(() {
-            i = i + 1;
-          });
-          //    print(event.snapshot.value['latitude']);
-          print(i);
+          if (deviceMarkers.contains(event.snapshot.key) == true) {
+            markers.removeWhere(
+                (marker) => marker.markerId.value == event.snapshot.key);
+            deviceMarkers.add(event.snapshot.key);
 
-          if (i == 1) {
-            await mapController.clearMarkers();
-          }
-          if (i == snapValue.length) {
-            setState(() {
-              i = 0;
-            });
-            print("i = 0");
-          }
-          mapController.addMarker(
-            MarkerOptions(
+            markers.add(Marker(
+              markerId: MarkerId(
+                event.snapshot.key,
+              ),
               position: LatLng(
                   double.parse(event.snapshot.value['latitude'].toString()),
                   double.parse(event.snapshot.value['longitude'].toString())),
-            ),
-          );
+            ));
+          } else {
+            deviceMarkers.add(event.snapshot.key);
+
+            markers.add(Marker(
+              markerId: MarkerId(
+                event.snapshot.key,
+              ),
+              position: LatLng(
+                  double.parse(event.snapshot.value['latitude'].toString()),
+                  double.parse(event.snapshot.value['longitude'].toString())),
+            ));
+          }
         });
       });
     });
@@ -170,6 +174,7 @@ class HomeState extends State<Home> {
             width: 600,
             height: 600,
             child: GoogleMap(
+              markers: markers,
               initialCameraPosition: CameraPosition(
                   target: LatLng(currentLatitude, currentLongitude), zoom: 20),
               compassEnabled: true,
@@ -186,7 +191,6 @@ class HomeState extends State<Home> {
         hoverColor: Colors.white,
         elevation: 20,
         isExtended: true,
-
       ),
     );
   }
