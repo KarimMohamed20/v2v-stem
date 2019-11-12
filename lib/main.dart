@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
         home: SplashPage(),
       routes: {
           'splash_screen': (context) => new SplashPage(),
-          'landing': (context) => new LandingPage(),
+          'landing': (context) => new Home(),
       },
     );
   }

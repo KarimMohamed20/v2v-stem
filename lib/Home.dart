@@ -40,7 +40,7 @@ class HomeState extends State<Home> {
     });
   }
 
-  void updateDatabase() {
+  void updateDatabase() async {
     databaseReference.child(_deviceid).set({
       'latitude': currentLocation['latitude'],
       'longitude': currentLocation['longitude'],
@@ -52,7 +52,7 @@ class HomeState extends State<Home> {
 
     initPlatformState();
     location.onLocationChanged().listen((result) {
-      setState(() async {
+      setState(() {
         currentLocation = {
           "latitude": result.latitude,
           "longitude": result.longitude
@@ -71,25 +71,39 @@ class HomeState extends State<Home> {
     return null;
   }
 
+  var i = 0;
   void mergePostandGet() async {
     await sendMyLocation();
     databaseReference.once().then((DataSnapshot snapshot) {
-      Map<dynamic, dynamic> values = snapshot.value;
-      values.forEach((key, values) {
+      Map<dynamic, dynamic> snapValue = snapshot.value;
+
+      snapValue.forEach((key, values) {
+        print(key);
         subscription = FirebaseDatabase.instance
             .reference()
             .child(key)
             .onValue
-            .listen((event) {
+            .listen((event) async {
           setState(() {
-            currentLatitude = event.snapshot.value['latitude'];
-            currentLongitude = event.snapshot.value['longitude'];
+            i = i + 1;
           });
-          mapController.clearMarkers();
+          //    print(event.snapshot.value['latitude']);
+          print(i);
+
+          if (i == 1) {
+            await mapController.clearMarkers();
+          }
+          if (i == snapValue.length) {
+            setState(() {
+              i = 0;
+            });
+            print("i = 0");
+          }
           mapController.addMarker(
             MarkerOptions(
-              position: LatLng(event.snapshot.value['latitude'],
-                  event.snapshot.value['longitude']),
+              position: LatLng(
+                  double.parse(event.snapshot.value['latitude'].toString()),
+                  double.parse(event.snapshot.value['longitude'].toString())),
             ),
           );
         });
