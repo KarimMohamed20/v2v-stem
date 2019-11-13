@@ -20,7 +20,6 @@ class MyApp extends StatelessWidget {
           'landing': (context) => new LandingPage(),
           'login': (context) => new Login(),
           'register': (context) => new Register(),
-          'profile': (context) => new ProfilePage(),
       },
     );
   }

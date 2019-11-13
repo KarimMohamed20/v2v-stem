@@ -32,7 +32,6 @@ class HomeState extends State<Home> {
 
   Location location = new Location();
   String error;
-  bool firstLocation = true;
   Map<String, double> currentLocation = new Map();
 
   void updateDatabase() {
@@ -50,10 +49,6 @@ class HomeState extends State<Home> {
           "latitude": result.latitude,
           "longitude": result.longitude
         };
-
-        updateDatabase();
-      });
-      if (firstLocation == true) {
         mapController.animateCamera(
           CameraUpdate.newCameraPosition(
             CameraPosition(
@@ -62,18 +57,8 @@ class HomeState extends State<Home> {
                 zoom: 20),
           ),
         );
-        setState(() {
-          firstLocation = false;
-        });
-      }
-      mapController.animateCamera(
-        CameraUpdate.newCameraPosition(
-          CameraPosition(
-              target: LatLng(
-                  currentLocation['latitude'], currentLocation['longitude']),
-              zoom: 20),
-        ),
-      );
+        updateDatabase();
+      });
     });
 
     return null;
@@ -113,9 +98,9 @@ class HomeState extends State<Home> {
             .child(key)
             .onValue
             .listen((event) async {
-          setState(() {
+          if (event.snapshot.key == widget.uid) {
             name = event.snapshot.value['name'];
-          });
+          }
           if (uidMarkers.contains(event.snapshot.key) == true) {
             markers.removeWhere(
                 (marker) => marker.markerId.value == event.snapshot.key);
@@ -240,7 +225,11 @@ class HomeState extends State<Home> {
                 ],
               ),
             )
-          : _page == 0 ? Center(child: Text('First Page')) : ProfilePage(uid: widget.uid,),
+          : _page == 0
+              ? Center(child: Text('First Page'))
+              : ProfilePage(
+                  uid: widget.uid,
+                ),
       bottomNavigationBar: CurvedNavigationBar(
         backgroundColor: Colors.blueAccent,
         index: _page,

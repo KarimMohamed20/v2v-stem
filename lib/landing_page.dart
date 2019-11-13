@@ -165,7 +165,7 @@ buttonAlignment.addListener(() {
                 fontWeight: FontWeight.w500),),
         ),
       ),
-      onTap: () {Navigator.pushReplacementNamed(context, "login");
+      onTap: () {Navigator.pushNamed(context, "register");
       },
     );
   }

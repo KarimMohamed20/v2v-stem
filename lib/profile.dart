@@ -389,7 +389,9 @@ class MapScreenState extends State<ProfilePage>
                 textColor: Colors.white,
                 color: Colors.green,
                 onPressed: () {
+                  editMyData();
                   setState(() {
+
                     _status = true;
                     FocusScope.of(context).requestFocus(new FocusNode());
                   });
