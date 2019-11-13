@@ -9,7 +9,7 @@ class AnimatedText extends StatefulWidget {
   final TextStyle textStyle;
 
   AnimatedText(this.text, this.delayInMilliseconds,
-      {this.durationInMilliseconds: 2500, this.textStyle});
+      {this.durationInMilliseconds: 4000, this.textStyle});
 
   @override createState() => new AnimatedTextState(text);
 }
@@ -19,7 +19,7 @@ class AnimatedTextState extends State<AnimatedText>
 
   String currentText = "";
 
-  final String text;
+  String text;
 
   AnimationController animationController;
 

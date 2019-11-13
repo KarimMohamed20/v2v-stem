@@ -7,13 +7,16 @@ import 'package:flutter_maps/widgets/splash-landing/animated_services.dart';
 import 'package:flutter_maps/widgets/splash-landing/spread_circles.dart';
 import 'package:flutter_maps/widgets/splash-landing/stacked_circles.dart';
 
+
 class LandingPage extends StatefulWidget {
+
   @override
   State createState() => new LandingPageState();
 }
 
 class LandingPageState extends State<LandingPage>
     with TickerProviderStateMixin {
+
   AnimationController buttonAnimationController;
   Animation<AlignmentGeometry> buttonAlignment;
   Animation<double> buttonOpacity;
@@ -27,16 +30,14 @@ class LandingPageState extends State<LandingPage>
       end: new Alignment(0.0, 0.95),
     ).animate(new CurvedAnimation(
       parent: buttonAnimationController,
-      curve: new Interval(0.3, 0.9, curve: Curves.easeInOut),
-    ));
+      curve: new Interval(0.3, 0.9, curve: Curves.easeInOut),));
     buttonOpacity = new Tween<double>(
       begin: 0.0,
       end: 1.0,
     ).animate(new CurvedAnimation(
       parent: buttonAnimationController,
-      curve: new Interval(0.3, 1.0, curve: Curves.easeInOut),
-    ));
-    buttonAlignment.addListener(() {
+      curve: new Interval(0.3, 1.0, curve: Curves.easeInOut),));
+buttonAlignment.addListener(() {
       setState(() {});
     });
     buttonOpacity.addListener(() {
@@ -54,6 +55,7 @@ class LandingPageState extends State<LandingPage>
 
   @override
   void dispose() {
+
     buttonAnimationController.dispose();
     super.dispose();
   }
@@ -81,21 +83,26 @@ class LandingPageState extends State<LandingPage>
         child: new Padding(
           padding: const EdgeInsets.only(left: 15.0),
           child: new Column(
-            
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+
+//              ده يعتبر بريفيو
+//              new Text("Know Everything\nin your way:", style: TextStyle(color: Colors.black, fontSize: 28.0,)),
+//              End Preview
+
+
+//            ############أحيانا مش بيظهر الكلام مظبوط بسبب الديباج لكن مع الريليس هيتظبط##########
               new AnimatedText(
-                "Know Everything \nin your way:",
-                animatedTextDelay,
-                durationInMilliseconds: 2500,
-                textStyle: TextStyle(color: Colors.black),
-              ),
+                  "Know Everything \nin your way:", animatedTextDelay,
+                  durationInMilliseconds: 2500,
+                  textStyle: TextStyle(color: Colors.black, fontSize: 28.0, fontStyle: FontStyle.italic),),
               new AnimatedServicesText(animatedTextDelay + 2500),
             ],
           ),
-        ));
+        )
+    );
   }
 
   Widget _buildStackedCircles() {
@@ -133,7 +140,8 @@ class LandingPageState extends State<LandingPage>
               child: child,
             ),
           );
-        });
+        }
+    );
   }
 
   Widget _createAccountButton() {
@@ -143,24 +151,21 @@ class LandingPageState extends State<LandingPage>
           padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
           decoration: new BoxDecoration(
             borderRadius: new BorderRadius.circular(5.0),
-            gradient: new LinearGradient(colors: <Color>[
-              Colors.green,
-              Colors.greenAccent,
-            ]),
+            gradient: new LinearGradient(
+                colors: <Color>[
+                  Colors.green,
+                  Colors.greenAccent,
+                ]
+            ),
           ),
           alignment: Alignment.center,
-          child: new Text(
-            "Create account",
-            style: new TextStyle(
-                color: Colors.white,
+          child: new Text("Create account",
+            style: new TextStyle(color: Colors.white,
                 fontSize: 16.0,
-                fontWeight: FontWeight.w500),
-          ),
+                fontWeight: FontWeight.w500),),
         ),
       ),
-      onTap: () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => Register()));
+      onTap: () {Navigator.pushReplacementNamed(context, "login");
       },
     );
   }
@@ -172,25 +177,21 @@ class LandingPageState extends State<LandingPage>
           padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
           decoration: new BoxDecoration(
             borderRadius: new BorderRadius.circular(5.0),
-            gradient: new LinearGradient(colors: <Color>[
-              Colors.grey.withAlpha(150),
-              Colors.grey.withAlpha(100),
-            ]),
+            gradient: new LinearGradient(
+                colors: <Color>[
+                  Colors.grey.withAlpha(150),
+                  Colors.grey.withAlpha(100),
+                ]
+            ),
           ),
           alignment: Alignment.center,
-          child: new Text(
-            "Sign In",
-            style: new TextStyle(
-                color: Colors.black54,
+          child: new Text("Sign In",
+            style: new TextStyle(color: Colors.black54,
                 fontSize: 16.0,
-                fontWeight: FontWeight.w500),
-          ),
+                fontWeight: FontWeight.w500),),
         ),
       ),
-      onTap: () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => Login()));
-      },
+      onTap: () {Navigator.pushNamed(context, 'login');},
     );
   }
 
@@ -199,12 +200,10 @@ class LandingPageState extends State<LandingPage>
     return new RichText(
       textAlign: TextAlign.center,
       text: new TextSpan(
-        text:
-            "By signing up to our services you indicate that you have read and agree to our ",
+        text: "By signing up to our services you indicate that you have read and agree to our ",
         style: textStyle,
         children: <TextSpan>[
-          new TextSpan(
-              text: "terms and conditions",
+          new TextSpan(text: "terms and conditions",
               style: new TextStyle(decoration: TextDecoration.underline)),
         ],
       ),
