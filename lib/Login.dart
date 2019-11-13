@@ -80,7 +80,7 @@ class _LoginState extends State<Login> {
   }
 
   Widget loginPage() {
-    return new Container(
+    return Container(
       height: MediaQuery.of(context).size.height,
       color: Colors.transparent,
       child: new Column(children: <Widget>[

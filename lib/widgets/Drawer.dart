@@ -58,7 +58,7 @@ class SideDraw extends StatelessWidget {
             onTap: () async {
               SharedPreferences prefs = await SharedPreferences.getInstance();
               await prefs.remove("uid");
-              Navigator.pushReplacementNamed(context, 'landing');
+              Navigator.pushReplacementNamed(context, 'splash_screen');
             },
           ),
         ],
