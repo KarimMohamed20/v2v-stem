@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -26,13 +27,12 @@ class HomeState extends State<Home> {
 
   Location location = new Location();
   String error;
-
+  bool firstLocation = true;
   Map<String, double> currentLocation = new Map();
-
 
   void updateDatabase() {
     databaseReference.child(widget.uid).update({
-      "latitude":currentLocation['latitude'],
+      "latitude": currentLocation['latitude'],
       "longitude": currentLocation['longitude']
     });
   }
@@ -45,20 +45,43 @@ class HomeState extends State<Home> {
           "latitude": result.latitude,
           "longitude": result.longitude
         };
-        mapController.animateCamera(
-          CameraUpdate.newCameraPosition(
-            CameraPosition(
-                target: LatLng(
-                    currentLocation['latitude'], currentLocation['longitude']),
-                zoom: 20),
-          ),
-        );
+
         updateDatabase();
       });
+      if(firstLocation == true){
+        mapController.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(
+            target: LatLng(
+                currentLocation['latitude'], currentLocation['longitude']),
+            zoom: 20),
+      ),
+    );
+    setState((){
+      firstLocation = false;
     });
+      }
+    });
+    
     return null;
   }
+Future<BitmapDescriptor> _getAssetIcon(BuildContext context) async {
+   final Completer<BitmapDescriptor> bitmapIcon =
+       Completer<BitmapDescriptor>();
+   final ImageConfiguration config = createLocalImageConfiguration(context,size: Size(30,30));
 
+   const AssetImage('assets/car.png')
+       .resolve(config)
+       .addListener(ImageStreamListener((ImageInfo image, bool sync) async {
+     final ByteData bytes =
+         await image.image.toByteData(format: ImageByteFormat.png);
+     final BitmapDescriptor bitmap =
+         BitmapDescriptor.fromBytes(bytes.buffer.asUint8List());
+     bitmapIcon.complete(bitmap);
+   }));
+
+   return await bitmapIcon.future;
+ }
   var uidMarkers = [];
   Set<Marker> markers = {};
   void mergePostandGet() async {
@@ -81,18 +104,18 @@ class HomeState extends State<Home> {
             print("Added: ${event.snapshot.key}");
             markers.add(
               Marker(
-                  markerId: MarkerId(
-                    event.snapshot.key,
-                  ),
-                  
+                //  icon: await _getAssetIcon(context),
+                //   markerId: MarkerId(
+                //     event.snapshot.key,
+                //   ),
+
                   position: LatLng(
                       double.parse(event.snapshot.value['latitude'].toString()),
                       double.parse(
                           event.snapshot.value['longitude'].toString())),
                   infoWindow: InfoWindow(
-
-                      title: event.snapshot.value['name'] ,
-                      snippet: event.snapshot.value['carModel'] )),
+                      title: event.snapshot.value['name'],
+                      snippet: event.snapshot.value['carModel'])),
             );
             print(
               LatLng(double.parse(event.snapshot.value['latitude'].toString()),
@@ -102,9 +125,15 @@ class HomeState extends State<Home> {
             uidMarkers.add(event.snapshot.key);
 
             markers.add(Marker(
+              // icon: await BitmapDescriptor.fromAssetImage(ImageConfiguration(
+              //     size: Size(5,15)
+              //   ), "assets/car.png"),
               markerId: MarkerId(
                 event.snapshot.key,
               ),
+              infoWindow: InfoWindow(
+                      title: event.snapshot.value['name'],
+                      snippet: event.snapshot.value['carModel']),
               position: LatLng(
                   double.parse(event.snapshot.value['latitude'].toString()),
                   double.parse(event.snapshot.value['longitude'].toString())),
@@ -131,9 +160,9 @@ class HomeState extends State<Home> {
   }
 
   void initPlatformState() async {
-    LocationData my_location;
+    LocationData myLocation;
     try {
-      my_location = await location.getLocation();
+      myLocation = await location.getLocation();
       error = "";
     } on PlatformException catch (e) {
       if (e.code == 'PERMISSION_DENIED')
@@ -141,12 +170,12 @@ class HomeState extends State<Home> {
       else if (e.code == 'PERMISSION_DENIED_NEVER_ASK')
         error =
             'Permission denied - please ask the user to enable it from the app settings';
-      my_location = null;
+      myLocation = null;
     }
     setState(() {
       currentLocation = {
-        "latitude": my_location.latitude,
-        "longitude": my_location.longitude
+        "latitude": myLocation.latitude,
+        "longitude": myLocation.longitude
       };
     });
   }
@@ -187,7 +216,8 @@ class HomeState extends State<Home> {
             markers: markers,
             initialCameraPosition: CameraPosition(
                 target: LatLng(currentLatitude, currentLongitude), zoom: 20),
-            compassEnabled: true,
+            compassEnabled: false,
+            mapToolbarEnabled: false,
             mapType: _currentMapType,
             onMapCreated: _onMapCreated,
           ),
