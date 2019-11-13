@@ -21,7 +21,7 @@ class Home extends StatefulWidget {
 class HomeState extends State<Home> {
   var databaseReference = FirebaseDatabase.instance.reference();
   MapType _currentMapType = MapType.satellite;
-
+  var name = '';
   static double currentLatitude = 0.0;
   static double currentLongitude = 0.0;
   int _page = 1;
@@ -113,7 +113,9 @@ class HomeState extends State<Home> {
             .child(key)
             .onValue
             .listen((event) async {
-          print(event.snapshot.key);
+          setState(() {
+            name = event.snapshot.value['name'];
+          });
           if (uidMarkers.contains(event.snapshot.key) == true) {
             markers.removeWhere(
                 (marker) => marker.markerId.value == event.snapshot.key);
@@ -203,43 +205,42 @@ class HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       body: _page == 1
           ? Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            'Cars in street',
-          ),
-          centerTitle: true,
-          backgroundColor: Colors.indigo,
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: _onMapTypeButtonPressed,
-          child: Icon(Icons.satellite),
-          backgroundColor: Colors.indigoAccent,
-          hoverColor: Colors.white,
-          elevation: 20,
-          isExtended: true,
-        ),
-        drawer: SideDraw(),
-
-        body: Stack(
-          children: <Widget>[
-            GoogleMap(
-              markers: markers,
-              initialCameraPosition: CameraPosition(
-                  target: LatLng(currentLatitude, currentLongitude),
-                  zoom: 20),
-              compassEnabled: false,
-              mapToolbarEnabled: false,
-              mapType: _currentMapType,
-              onMapCreated: _onMapCreated,
-            ),
-          ],
-        ),
-      )
-          : _page == 0 ? Center(child: Text('First Page')): ProfilePage(),
-
+              appBar: AppBar(
+                title: const Text(
+                  'Cars in street',
+                ),
+                centerTitle: true,
+                backgroundColor: Colors.indigo,
+              ),
+              floatingActionButton: FloatingActionButton(
+                onPressed: _onMapTypeButtonPressed,
+                child: Icon(Icons.satellite),
+                backgroundColor: Colors.indigoAccent,
+                hoverColor: Colors.white,
+                elevation: 20,
+                isExtended: true,
+              ),
+              drawer: SideDraw(
+                name: name,
+              ),
+              body: Stack(
+                children: <Widget>[
+                  GoogleMap(
+                    markers: markers,
+                    initialCameraPosition: CameraPosition(
+                        target: LatLng(currentLatitude, currentLongitude),
+                        zoom: 20),
+                    compassEnabled: false,
+                    mapToolbarEnabled: false,
+                    mapType: _currentMapType,
+                    onMapCreated: _onMapCreated,
+                  ),
+                ],
+              ),
+            )
+          : _page == 0 ? Center(child: Text('First Page')) : ProfilePage(uid: widget.uid,),
       bottomNavigationBar: CurvedNavigationBar(
         backgroundColor: Colors.blueAccent,
         index: _page,

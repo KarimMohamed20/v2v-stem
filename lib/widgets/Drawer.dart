@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
 class SideDraw extends StatelessWidget {
+  final name;
+  SideDraw({this.name});
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -39,7 +39,7 @@ class SideDraw extends StatelessWidget {
                   ),
                   SizedBox(height: 8),
                   Text(
-                    'Ahmed Saad Sharawi',
+                    '$name',
                     style: TextStyle(
                         color: Colors.white, fontWeight: FontWeight.bold),
                   )
