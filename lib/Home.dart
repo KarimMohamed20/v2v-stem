@@ -25,7 +25,6 @@ class HomeState extends State<Home> {
   static double currentLatitude = 0.0;
   static double currentLongitude = 0.0;
   int _page = 1;
-  GlobalKey _bottomNavigationKey = GlobalKey();
 
   static GoogleMapController mapController;
 
@@ -67,6 +66,16 @@ class HomeState extends State<Home> {
           firstLocation = false;
         });
       }
+        mapController.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(
+            target: LatLng(
+                currentLocation['latitude'], currentLocation['longitude']),
+            zoom: 20),
+      ),
+    );
+    
+     
     });
 
     return null;
@@ -114,6 +123,7 @@ class HomeState extends State<Home> {
             print("Added: ${event.snapshot.key}");
             markers.add(
               Marker(
+                icon: await _getAssetIcon(context),
                   markerId: MarkerId(
                     event.snapshot.key,
                   ),
@@ -133,9 +143,8 @@ class HomeState extends State<Home> {
             uidMarkers.add(event.snapshot.key);
 
             markers.add(Marker(
-              // icon: await BitmapDescriptor.fromAssetImage(ImageConfiguration(
-              //     size: Size(5,15)
-              //   ), "assets/car.png"),
+              
+              icon: await _getAssetIcon(context),
               markerId: MarkerId(
                 event.snapshot.key,
               ),
