@@ -89,15 +89,15 @@ buttonAlignment.addListener(() {
             children: <Widget>[
 
 //              ده يعتبر بريفيو
-              new Text("Know Everything\nin your way:", style: TextStyle(color: Colors.black, fontSize: 28.0,)),
+//              new Text("Know Everything\nin your way:", style: TextStyle(color: Colors.black, fontSize: 28.0,)),
 //              End Preview
 
 
 //            ############أحيانا مش بيظهر الكلام مظبوط بسبب الديباج لكن مع الريليس هيتظبط##########
-//              new AnimatedText(
-//                  "Know Everything \nin your way:", animatedTextDelay,
-//                  durationInMilliseconds: 2500,
-//                  textStyle: TextStyle(color: Colors.black, fontSize: 28.0, fontStyle: FontStyle.italic),),
+              new AnimatedText(
+                  "Know Everything \nin your way:", animatedTextDelay,
+                  durationInMilliseconds: 2500,
+                  textStyle: TextStyle(color: Colors.black, fontSize: 28.0, fontStyle: FontStyle.italic),),
               new AnimatedServicesText(animatedTextDelay + 2500),
             ],
           ),

@@ -56,7 +56,7 @@ class _RegisterState extends State<Register> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Blue Line"),
+        title: Text("V2V STEM"),
       ),
       body: Container(
         padding: EdgeInsets.all(20),

@@ -7,13 +7,10 @@ import 'package:location/location.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'profile.dart';
 
 class Home extends StatefulWidget {
   final uid;
-
   Home({@required this.uid});
-
   @override
   State createState() => HomeState();
 }
@@ -25,6 +22,7 @@ class HomeState extends State<Home> {
   static double currentLatitude = 0.0;
   static double currentLongitude = 0.0;
   int _page = 1;
+
 
   static GoogleMapController mapController;
 
@@ -53,18 +51,18 @@ class HomeState extends State<Home> {
 
         updateDatabase();
       });
-      if (firstLocation == true) {
+      if(firstLocation == true){
         mapController.animateCamera(
-          CameraUpdate.newCameraPosition(
-            CameraPosition(
-                target: LatLng(
-                    currentLocation['latitude'], currentLocation['longitude']),
-                zoom: 20),
-          ),
-        );
-        setState(() {
-          firstLocation = false;
-        });
+      CameraUpdate.newCameraPosition(
+        CameraPosition(
+            target: LatLng(
+                currentLocation['latitude'], currentLocation['longitude']),
+            zoom: 20),
+      ),
+    );
+    setState((){
+      firstLocation = false;
+    });
       }
         mapController.animateCamera(
       CameraUpdate.newCameraPosition(
@@ -77,32 +75,28 @@ class HomeState extends State<Home> {
     
      
     });
-
+    
     return null;
   }
+Future<BitmapDescriptor> _getAssetIcon(BuildContext context) async {
+   final Completer<BitmapDescriptor> bitmapIcon =
+       Completer<BitmapDescriptor>();
+   final ImageConfiguration config = createLocalImageConfiguration(context,size: Size(30,30));
 
-  Future<BitmapDescriptor> _getAssetIcon(BuildContext context) async {
-    final Completer<BitmapDescriptor> bitmapIcon =
-        Completer<BitmapDescriptor>();
-    final ImageConfiguration config =
-        createLocalImageConfiguration(context, size: Size(30, 30));
+   const AssetImage('assets/car.png')
+       .resolve(config)
+       .addListener(ImageStreamListener((ImageInfo image, bool sync) async {
+     final ByteData bytes =
+         await image.image.toByteData(format: ImageByteFormat.png);
+     final BitmapDescriptor bitmap =
+         BitmapDescriptor.fromBytes(bytes.buffer.asUint8List());
+     bitmapIcon.complete(bitmap);
+   }));
 
-    const AssetImage('assets/car.png')
-        .resolve(config)
-        .addListener(ImageStreamListener((ImageInfo image, bool sync) async {
-      final ByteData bytes =
-          await image.image.toByteData(format: ImageByteFormat.png);
-      final BitmapDescriptor bitmap =
-          BitmapDescriptor.fromBytes(bytes.buffer.asUint8List());
-      bitmapIcon.complete(bitmap);
-    }));
-
-    return await bitmapIcon.future;
-  }
-
+   return await bitmapIcon.future;
+ }
   var uidMarkers = [];
   Set<Marker> markers = {};
-
   void mergePostandGet() async {
     await sendMyLocation();
     databaseReference.once().then((DataSnapshot snapshot) {
@@ -127,6 +121,7 @@ class HomeState extends State<Home> {
                   markerId: MarkerId(
                     event.snapshot.key,
                   ),
+
                   position: LatLng(
                       double.parse(event.snapshot.value['latitude'].toString()),
                       double.parse(
@@ -149,8 +144,8 @@ class HomeState extends State<Home> {
                 event.snapshot.key,
               ),
               infoWindow: InfoWindow(
-                  title: event.snapshot.value['name'],
-                  snippet: event.snapshot.value['carModel']),
+                      title: event.snapshot.value['name'],
+                      snippet: event.snapshot.value['carModel']),
               position: LatLng(
                   double.parse(event.snapshot.value['latitude'].toString()),
                   double.parse(event.snapshot.value['longitude'].toString())),
@@ -220,49 +215,43 @@ class HomeState extends State<Home> {
           ],
         ),
       ),
-      body: _page == 1
-          ? Scaffold(
-              appBar: AppBar(
-                title: Text(
-                  'Cars in street',
-                ),
-                centerTitle: true,
-                backgroundColor: Colors.indigo,
-              ),
-              floatingActionButton: FloatingActionButton(
-                onPressed: _onMapTypeButtonPressed,
-                child: Icon(Icons.satellite),
-                backgroundColor: Colors.indigoAccent,
-                hoverColor: Colors.white,
-                elevation: 20,
-                isExtended: true,
-              ),
-              body: Stack(
-                children: <Widget>[
-                  GoogleMap(
-                    markers: markers,
-                    initialCameraPosition: CameraPosition(
-                        target: LatLng(currentLatitude, currentLongitude),
-                        zoom: 20),
-                    compassEnabled: false,
-                    mapToolbarEnabled: false,
-                    mapType: _currentMapType,
-                    onMapCreated: _onMapCreated,
-                  ),
-                ],
-              ),
-            )
-          : _page == 0
-              ? Center(child: Text('First Page'))
-              : ProfilePage(),
+      appBar: AppBar(
+        title: const Text(
+          'Cars in street',
+        ),
+        centerTitle: true,
+        backgroundColor: Colors.indigo,
+      ),
+      body: _page == 1 ?Stack(
+        children: <Widget>[
+          GoogleMap(
+            markers: markers,
+            initialCameraPosition: CameraPosition(
+                target: LatLng(currentLatitude, currentLongitude), zoom: 20),
+            compassEnabled: false,
+            mapToolbarEnabled: false,
+            mapType: _currentMapType,
+            onMapCreated: _onMapCreated,
+          ),
+        ],
+      ) : _page == 0 ? Center(child:Text('First Page')) : Center(child:Text('Third Page')),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _onMapTypeButtonPressed,
+        child: Icon(Icons.satellite),
+        backgroundColor: Colors.indigoAccent,
+        hoverColor: Colors.white,
+        elevation: 20,
+        isExtended: true,
+      ),
       bottomNavigationBar: CurvedNavigationBar(
         backgroundColor: Colors.blueAccent,
         index: _page,
+
         animationCurve: Curves.easeOutCubic,
         color: Colors.grey.shade50,
         buttonBackgroundColor: Colors.grey.shade100,
         items: <Widget>[
-          Icon(Icons.error, size: 30),
+          Icon(Icons.compare_arrows, size: 30),
           Icon(Icons.navigation, size: 30),
           Icon(Icons.person_pin, size: 30),
         ],
@@ -270,8 +259,11 @@ class HomeState extends State<Home> {
           setState(() {
             _page = index;
           });
+         
+
         },
       ),
+
     );
   }
 
