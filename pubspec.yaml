@@ -24,7 +24,7 @@ dependencies:
   firebase_auth: ^0.14.0+8
   shared_preferences:
   curved_navigation_bar: ^0.3.1 #latest version
-
+  font_awesome_flutter: ^8.5.0
 
 
   # The following adds the Cupertino Icons font to your application.
