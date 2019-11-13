@@ -21,6 +21,9 @@ class HomeState extends State<Home> {
 
   static double currentLatitude = 0.0;
   static double currentLongitude = 0.0;
+  int _page = 1;
+  GlobalKey _bottomNavigationKey = GlobalKey();
+
 
   static GoogleMapController mapController;
 
@@ -210,7 +213,7 @@ Future<BitmapDescriptor> _getAssetIcon(BuildContext context) async {
         centerTitle: true,
         backgroundColor: Colors.indigo,
       ),
-      body: Stack(
+      body: _page == 1 ?Stack(
         children: <Widget>[
           GoogleMap(
             markers: markers,
@@ -222,7 +225,7 @@ Future<BitmapDescriptor> _getAssetIcon(BuildContext context) async {
             onMapCreated: _onMapCreated,
           ),
         ],
-      ),
+      ) : _page == 0 ? Center(child:Text('First Page')) : Center(child:Text('Third Page')),
       floatingActionButton: FloatingActionButton(
         onPressed: _onMapTypeButtonPressed,
         child: Icon(Icons.satellite),
@@ -233,7 +236,8 @@ Future<BitmapDescriptor> _getAssetIcon(BuildContext context) async {
       ),
       bottomNavigationBar: CurvedNavigationBar(
         backgroundColor: Colors.blueAccent,
-        initialIndex: 2,
+        index: _page,
+
         animationCurve: Curves.easeOutCubic,
         color: Colors.grey.shade50,
         buttonBackgroundColor: Colors.grey.shade100,
@@ -243,9 +247,14 @@ Future<BitmapDescriptor> _getAssetIcon(BuildContext context) async {
           Icon(Icons.person_pin, size: 30),
         ],
         onTap: (index) {
+          setState(() {
+            _page = index;
+          });
+         
 
         },
       ),
+
     );
   }
 
