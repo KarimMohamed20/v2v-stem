@@ -5,6 +5,7 @@ import 'splash_screen.dart';
 import 'landing_page.dart';
 import'package:flutter_maps/Login.dart';
 import 'Register.dart';
+import 'profile.dart';
 
 void main() => runApp(MyApp());
 
@@ -19,6 +20,7 @@ class MyApp extends StatelessWidget {
           'landing': (context) => new LandingPage(),
           'login': (context) => new Login(),
           'register': (context) => new Register(),
+        'profile': (context) => new ProfilePage(),
       },
     );
   }

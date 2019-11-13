@@ -236,7 +236,7 @@ class SplashPageState extends State<SplashPage>
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.all(30.0),
-                  child: Text("Some Text لسه محطيتهوش هههه"),
+                  child: Text("Made by Plebits LLC", style: TextStyle(color: Colors.purple, fontWeight: FontWeight.w900),),
                 ),
               ],
             ),
