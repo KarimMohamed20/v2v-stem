@@ -22,7 +22,6 @@ class HomeState extends State<Home> {
   static double currentLatitude = 0.0;
   static double currentLongitude = 0.0;
   int _page = 1;
-  GlobalKey _bottomNavigationKey = GlobalKey();
 
 
   static GoogleMapController mapController;
@@ -52,7 +51,6 @@ class HomeState extends State<Home> {
 
         updateDatabase();
       });
-      if(firstLocation == true){
         mapController.animateCamera(
       CameraUpdate.newCameraPosition(
         CameraPosition(
@@ -61,10 +59,8 @@ class HomeState extends State<Home> {
             zoom: 20),
       ),
     );
-    setState((){
-      firstLocation = false;
-    });
-      }
+    
+     
     });
     
     return null;
@@ -108,6 +104,7 @@ Future<BitmapDescriptor> _getAssetIcon(BuildContext context) async {
             print("Added: ${event.snapshot.key}");
             markers.add(
               Marker(
+                icon: await _getAssetIcon(context),
                   markerId: MarkerId(
                     event.snapshot.key,
                   ),
@@ -128,9 +125,8 @@ Future<BitmapDescriptor> _getAssetIcon(BuildContext context) async {
             uidMarkers.add(event.snapshot.key);
 
             markers.add(Marker(
-              // icon: await BitmapDescriptor.fromAssetImage(ImageConfiguration(
-              //     size: Size(5,15)
-              //   ), "assets/car.png"),
+              
+              icon: await _getAssetIcon(context),
               markerId: MarkerId(
                 event.snapshot.key,
               ),
