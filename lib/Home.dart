@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:ui';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_maps/Chat.dart';
 import 'package:flutter_maps/profile.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
@@ -22,6 +23,8 @@ class HomeState extends State<Home> {
   var databaseReference = FirebaseDatabase.instance.reference();
   MapType _currentMapType = MapType.satellite;
   var name = '';
+  var email = '';
+
   static double currentLatitude = 0.0;
   static double currentLongitude = 0.0;
   int _page = 1;
@@ -100,6 +103,7 @@ class HomeState extends State<Home> {
             .listen((event) async {
           if (event.snapshot.key == widget.uid) {
             name = event.snapshot.value['name'];
+            email = event.snapshot.value['email'];
           }
           if (uidMarkers.contains(event.snapshot.key) == true) {
             markers.removeWhere(
@@ -190,6 +194,14 @@ class HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar:_page != 1 ?AppBar(
+                title: const Text(
+                  'V2V STEM',
+                ),
+                centerTitle: true,
+                backgroundColor: Colors.indigo,
+              ) : PreferredSize(preferredSize: Size(0, 0),
+              child: Wrap(),),
       body: _page == 1
           ? Scaffold(
               appBar: AppBar(
@@ -226,7 +238,10 @@ class HomeState extends State<Home> {
               ),
             )
           : _page == 0
-              ? Center(child: Text('First Page'))
+              ? ChatScreen(
+                  name: name,
+                  email: email,
+                )
               : ProfilePage(
                   uid: widget.uid,
                 ),
@@ -237,7 +252,7 @@ class HomeState extends State<Home> {
         color: Colors.grey.shade50,
         buttonBackgroundColor: Colors.grey.shade100,
         items: <Widget>[
-          Icon(Icons.compare_arrows, size: 30),
+          Icon(Icons.chat, size: 30),
           Icon(Icons.navigation, size: 30),
           Icon(Icons.person_pin, size: 30),
         ],
